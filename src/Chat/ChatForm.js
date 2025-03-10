@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SendIcon from "./Icons/SendIcon";
 
-function ChatForm({onMessageSubmit}){
+function ChatForm({isAiResponding, onMessageSubmit}){
     const [inputValue, setInputValue] = useState("");
 
     const onInputChange = (e)=>{
@@ -19,7 +19,7 @@ function ChatForm({onMessageSubmit}){
     return (
         <form>
             <div className="input-controller">
-                <input placeholder="Ask anything" className="input" type="text" value={inputValue} name="message" onChange={onInputChange}></input>
+                <input placeholder={isAiResponding ? "AI is responding" : "Ask anything" } className="input" type="text" value={inputValue} name="message" onChange={onInputChange} disabled={isAiResponding}></input>
                 <button className="submit-btn" onClick={onSubmit} aria-disabled={!inputValue.length} disabled={!inputValue.length}><SendIcon></SendIcon></button>
             </div>
         </form>

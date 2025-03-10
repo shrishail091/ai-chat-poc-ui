@@ -18,6 +18,7 @@ const SendMessageUrl = `${BaseUrl}/chat/langchain/query-over-data`;
 function Chat() {
   const [isChatOpen, setIsChatOpen] = useState(true);
   const [chatMessages, setChatMessages] = useState([]);
+  const [isAiResponding, setIsAiResponding] = useState(false);
 
   async function createThread(ThreadConfig = ChatThread) {
     fetch(CreateThreadUrl, {
@@ -58,6 +59,7 @@ function Chat() {
   }
 
   async function sendQuery(query) {
+    setIsAiResponding(true);
     fetch(SendMessageUrl, {
       method: "POST",
       headers: {
@@ -71,11 +73,14 @@ function Chat() {
     })
       .then((response) => response)
       .then((data) => {
-        // onMessageSubmit(data);
+        // onMessageSubmit(data);        
         getAllMessagesByThread();
       })
       .catch((error) => {
         console.error("Error:", error);
+      })
+      .finally(()=>{
+        setIsAiResponding(false);
       });
   }
 
@@ -120,6 +125,7 @@ function Chat() {
           onCloseHandler={chatButtonHandler}
           onMessageSubmit={onMessageSubmit}
           onCreateNewThread={createNewThread}
+          isAiResponding={isAiResponding}
         ></ChatWrapper>
       )}
     </div>

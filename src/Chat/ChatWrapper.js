@@ -2,7 +2,7 @@ import ChatDisplay from "./ChatDisplay";
 import ChatForm from "./ChatForm";
 import CloseIcon from "./Icons/CloseIcon";
 
-function ChatWrapper({messages, onCloseHandler, onMessageSubmit, onCreateNewThread}){
+function ChatWrapper({messages, isAiResponding, onCloseHandler, onMessageSubmit, onCreateNewThread}){
     return (
         <div className="ChatWrapper">
             <header className="chat-header">
@@ -13,7 +13,7 @@ function ChatWrapper({messages, onCloseHandler, onMessageSubmit, onCreateNewThre
             </header>
             <button className="create-new-thread" onClick={onCreateNewThread}>Create New Chat</button>
             <ChatDisplay messages={messages}></ChatDisplay>
-            <ChatForm onMessageSubmit={onMessageSubmit}></ChatForm>
+            <ChatForm onMessageSubmit={onMessageSubmit} isAiResponding={isAiResponding}></ChatForm>
         </div>
     )
 }

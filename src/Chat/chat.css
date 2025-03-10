@@ -116,6 +116,7 @@ button:hover:not(:disabled){
     border-radius: 4px;
     border: none;
     box-shadow: 0 0 8px 1px black;
+    padding: 0 16px ;
 }
 
 .create-new-thread{
