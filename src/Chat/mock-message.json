@@ -1,0 +1,23 @@
+[
+    {
+        "isQuery":true,
+        "messageBy":"user",
+        "message": "Hi"
+    },
+    {
+        "isQuery":true,
+        "messageBy":"user",
+        "message": "I am shrishail"
+    },
+    {
+        "isQuery":true,
+        "messageBy":"user",
+        "message": "I want lear nextjs, how to start?"
+    },
+    {
+        "isQuery":false,
+        "messageBy":"assistant",
+        "message": "Sure,  let me help you. you can use Nextjs official document to learn nextjs completly"
+    }
+
+]
