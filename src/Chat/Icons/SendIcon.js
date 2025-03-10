@@ -18,7 +18,7 @@ function SendIcon() {
             stroke: "currentColor", strokeWidth: 1, strokeDasharray: "none", strokeLinecap: "butt", strokeLinejoin: "miter", strokeMiterlimit: 10, fill: "currentColor", fillRule: "nonzero", opacity: 1
           }}
           transform=" matrix(1 0 0 1 0 0) "
-          stroke-linecap="round"
+          strokeLinecap="round"
         />
       </g>
     </svg>

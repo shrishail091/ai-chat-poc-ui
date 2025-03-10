@@ -15,8 +15,9 @@ function ChatDisplay({ messages }) {
   return (
     <>
       <ul ref={scrollContainerRef} className="ChatDisplay">
-        {messages.map((message) => (
+        {messages.map((message, index) => (
           <li
+            key={index}
             className="message-item"
             data-message-type={
               message.messageBy === "user" ? "query" : "response"

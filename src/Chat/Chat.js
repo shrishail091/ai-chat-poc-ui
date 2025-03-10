@@ -2,44 +2,44 @@ import { useEffect, useState } from "react";
 import ChatWidgetButton from "./ChatWidgetButton";
 import ChatWrapper from "./ChatWrapper";
 import "./chat.css";
-import mockMessages from "./mock-message.json";
 
 const ChatThread = {
   userId: 2,
   threadName: "Neom Chat Widget POC",
   appId: 2,
-  threadId: 3,
+  threadId: localStorage.getItem("threadId") || 101,
 };
 
 const BaseUrl = "http://localhost:8080/v1";
 const CreateThreadUrl = `${BaseUrl}/chat-thread/chatThreads`;
 const ChatsByThread = `${BaseUrl}/chat/history/${ChatThread.threadId}?limit=50`;
-const SendMessageUrl = `${BaseUrl}/chat/openai/query`;
-
-async function createThread() {
-  fetch(CreateThreadUrl, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      userId: ChatThread.userId,
-      threadName: ChatThread.threadName,
-      appId: ChatThread.appId,
-    }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Success:");
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-}
+const SendMessageUrl = `${BaseUrl}/chat/langchain/query-over-data`;
 
 function Chat() {
   const [isChatOpen, setIsChatOpen] = useState(true);
-  const [chatMessages, setChatMessages] = useState(mockMessages);
+  const [chatMessages, setChatMessages] = useState([]);
+
+  async function createThread(ThreadConfig = ChatThread) {
+    fetch(CreateThreadUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: ThreadConfig.userId,
+        threadName: ThreadConfig.threadName,
+        appId: ThreadConfig.appId,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        localStorage.setItem("threadId", data.id);
+        setChatMessages([]);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
 
   async function getAllMessagesByThread() {
     fetch(ChatsByThread, {
@@ -49,7 +49,7 @@ function Chat() {
       },
     })
       .then((response) => response.json())
-      .then((data) => {        
+      .then((data) => {
         data.length && setChatMessages(data);
       })
       .catch((error) => {
@@ -70,7 +70,7 @@ function Chat() {
       }),
     })
       .then((response) => response)
-      .then((data) => {        
+      .then((data) => {
         // onMessageSubmit(data);
         getAllMessagesByThread();
       })
@@ -86,6 +86,18 @@ function Chat() {
 
   const chatButtonHandler = () => {
     setIsChatOpen((prevState) => !prevState);
+  };
+
+  const createNewThread = () => {
+    const id = Math.round(Math.random() * 100);
+
+    const threadConfig = {
+      userId: ChatThread.userId,
+      threadName: `Neom Chat Widget POC - ${id}`,
+      appId: ChatThread.appId,
+    };
+
+    createThread(threadConfig);
   };
 
   useEffect(() => {
@@ -107,6 +119,7 @@ function Chat() {
           messages={chatMessages}
           onCloseHandler={chatButtonHandler}
           onMessageSubmit={onMessageSubmit}
+          onCreateNewThread={createNewThread}
         ></ChatWrapper>
       )}
     </div>
